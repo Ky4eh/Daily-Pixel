@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Pixel Art</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Press+Start+2P&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="title.css">
+</head>
+
+<body>
+    <!-- Title Screen -->
+    <div id="title-screen">
+        <div class="title-content">
+            <h1 class="main-title"><span class="color-1">Daily</span><span class="color-2">Pixel</span></h1>
+            <nav class="title-menu">
+                <button class="title-btn" data-target="painter">✏️ Painting</button>
+                <button class="title-btn" data-target="gallery">🖼️ Gallery</button>
+                <button class="title-btn" data-target="calendar">📅 Calendar</button>
+                <button class="title-btn" data-target="settings">⚙️ Settings</button>
+            </nav>
+        </div>
+        <div class="bg-pixels"></div>
+    </div>
+
+    <div class="app-container hidden" id="app">
+        <header>
+            <div class="header-top">
+                <h1 class="logo"><span class="pixel-font">Daily</span> Pixel</h1>
+            </div>
+            <nav class="tabs">
+                <button class="tab-btn active" data-tab="painter">
+                    <span class="icon">✏️</span> 絵描き
+                </button>
+                <button class="tab-btn" data-tab="gallery">
+                    <span class="icon">🖼️</span> ギャラリー
+                </button>
+                <button class="tab-btn" data-tab="calendar">
+                    <span class="icon">📅</span> カレンダー
+                </button>
+                <button class="tab-btn" data-tab="settings">
+                    <span class="icon">⚙️</span> 設定
+                </button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Painter View -->
+            <section id="painter" class="view active">
+                <div class="painter-controls">
+                    <div class="control-group">
+                        <label>サイズ: </label>
+                        <select id="grid-size">
+                            <option value="4">4x4</option>
+                            <option value="8">8x8</option>
+                            <option value="16" selected>16x16</option>
+                            <option value="32">32x32</option>
+                            <option value="64">64x64</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>筆: </label>
+                        <select id="brush-size">
+                            <option value="1" selected>1px</option>
+                            <option value="2">2px</option>
+                            <option value="3">3px</option>
+                            <option value="4">4px</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>ツール: </label>
+                        <button id="tool-pen" class="tool-btn active" title="ペン">🖊️</button>
+                        <button id="tool-eraser" class="tool-btn" title="消しゴム">�</button>
+                        <button id="tool-fill" class="tool-btn" title="塗りつぶし">🪣</button>
+                        <button id="tool-eyedropper" class="tool-btn" title="スポイト">🩸</button>
+                    </div>
+                    <div class="control-group">
+                        <button id="undo-btn" class="icon-btn" title="元に戻す">↩️ Undo</button>
+                        <button id="clear-btn" class="icon-btn" title="全消去">🗑️ Clear</button>
+                    </div>
+                    <div class="control-group">
+                        <input type="color" id="color-picker" value="#000000">
+                        <div class="palette" id="quick-palette">
+                            <!-- JS will populate default colors -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="canvas-wrapper">
+                    <canvas id="pixel-canvas" width="512" height="512"></canvas>
+                </div>
+
+                <div class="action-bar">
+                    <button id="save-btn" class="primary-btn">ギャラリーに保存</button>
+                </div>
+            </section>
+
+            <!-- Gallery View -->
+            <section id="gallery" class="view">
+                <div class="gallery-header">
+                    <h2>保存した作品</h2>
+                    <div class="control-group">
+                        <label>並び順: </label>
+                        <select id="gallery-sort">
+                            <option value="newest">新しい順</option>
+                            <option value="oldest">古い順</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="gallery-grid" class="gallery-grid">
+                    <!-- Gallery items will be injected here -->
+                    <div class="empty-state">まだ絵がありません。「絵描き」タブで描いてみましょう！</div>
+                </div>
+            </section>
+
+            <!-- Calendar View -->
+            <section id="calendar" class="view">
+                <div class="calendar-header">
+                    <button id="prev-month" class="icon-btn">&lt;</button>
+                    <h2 id="current-month-display">2025年 12月</h2>
+                    <button id="next-month" class="icon-btn">&gt;</button>
+                </div>
+                <div class="calendar-grid-header">
+                    <div>日</div>
+                    <div>月</div>
+                    <div>火</div>
+                    <div>水</div>
+                    <div>木</div>
+                    <div>金</div>
+                    <div>土</div>
+                </div>
+                <div id="calendar-grid" class="calendar-grid">
+                    <!-- Calendar days will be injected here -->
+                </div>
+            </section>
+
+            <!-- Settings View -->
+            <section id="settings" class="view">
+                <div class="settings-container">
+                    <h2>設定</h2>
+                    <div class="setting-item">
+                        <label for="night-mode-toggle">ナイトモード</label>
+                        <label class="switch">
+                            <input type="checkbox" id="night-mode-toggle" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>保存先フォルダ</label>
+                        <div class="setting-control">
+                            <button id="set-dir-btn" class="secondary-btn">フォルダを選択...</button>
+                            <div id="dir-path-display" class="path-display">未設定</div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label>書き出しサイズ</label>
+                        <div class="setting-control radio-group">
+                            <label class="radio-label"><input type="radio" name="export-size" value="upscaled" checked>
+                                高画質 (1024px)</label>
+                            <label class="radio-label"><input type="radio" name="export-size" value="original">
+                                原寸大</label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
